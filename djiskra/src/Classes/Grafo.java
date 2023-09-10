@@ -27,10 +27,30 @@ public class Grafo {
     public void adicionarAresta(int origem, int destino, int peso) {
         adjacencias.get(origem).add(new Aresta(destino, peso));
     }
-    public void addArestaNo(Cliente origem, Cliente destino, int peso){
-        int ini = clientes.indexOf(origem);
-        int fim = clientes.indexOf(destino);
-        adjacencias.get(ini).add(new Aresta(fim, peso));
+    public void addArestaNo(String origem, String destino, int peso){
+        int i;
+        int j;
+        boolean existe = false;
+        boolean existe2= false;
+        int ini;
+        int fim;
+        for (i = 0;i< clientes.size() &&!existe; i++) {
+            Cliente cliente = clientes.get(i);
+            if (cliente.nome.equals(origem)||cliente.bairro.equals(origem)) {
+                existe=true;
+            }
+        }
+        for (j = 0;j< clientes.size()&&!existe2; j++) {
+            Cliente cliente = clientes.get(j);
+            if(cliente.nome.equals(destino)||cliente.bairro.equals(destino)){
+                existe2=true;
+            }
+        }
+        if(existe && existe2){
+            ini = i-1;
+            fim = j-1;
+            adjacencias.get(ini).add(new Aresta(fim, peso));
+        }else System.out.println("Origem ou destino inválido");
     }
     void printAdjacencias()
     {
@@ -50,9 +70,9 @@ public class Grafo {
         System.out.print("Digite o nome do bairro: ");
         String bairro = scanner.nextLine();
         for (Cliente cliente: clientes) {
-            if(cliente.bairro.equals(bairro)&& cliente.nome.equals(nome)){
-                System.out.println("sexo");
-                existe= true;
+            if (cliente.bairro.equals(bairro) && cliente.nome.equals(nome)) {
+                existe = true;
+                break;
             }
         }
         return existe;
@@ -94,8 +114,6 @@ public class Grafo {
             destino = j-1;
         }
         if(origem != -1){
-            System.out.println(origem );
-            System.out.println(destino);
             Arrays.fill(distancias, Integer.MAX_VALUE);
             Arrays.fill(predecessores, -1);
             distancias[origem] = 0;
@@ -118,8 +136,8 @@ public class Grafo {
             }
 
             imprimirRota(predecessores, destino);
-            System.out.println("\nA distância total é: " + distancias[destino]);
-        }else System.out.println("Não há origem ou destino come esse nome");
+            System.out.println("\nA distância total é: " + distancias[destino]+"km");
+        }else System.out.println("Não há origem ou destino com esse nome");
     }
 
     // Função para imprimir a rota a partir dos predecessores
@@ -138,11 +156,12 @@ public class Grafo {
         grafo.adicionarCliente("a", "1");
         grafo.adicionarCliente("b", "2");
         grafo.adicionarCliente("c", "3");
-        grafo.adicionarAresta(0,1,1);
+        grafo.addArestaNo("a", "b",1);
+//        grafo.adicionarAresta(0,1,1);
         grafo.adicionarAresta(1,2,5);
         grafo.adicionarAresta(1,0,9);
-//        grafo.buscarCliente();
-//        grafo.dijkstra("a","b");
+        grafo.buscarCliente();
+        grafo.dijkstra("a","b");
         grafo.printAdjacencias();
     }
 }

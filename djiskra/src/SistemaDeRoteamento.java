@@ -63,5 +63,40 @@ public class SistemaDeRoteamento {
         }
 
         scanner.close();
+
+        int decisao = 10;
+        while (decisao != 0){
+
+            System.out.println(" Digite:\n\n(1) Adcionar 1 Cliente\n(2) Remover 1 Cliente\n(3) Adicionar 1 rua\n(4) Interditar uma Rua\n(5) Calcular Fota\n(0) Encerrar o sistema ");
+                decisao = scanner.nextInt();
+            switch (decisao){
+                case 1:
+                    //Adiconar cliente;
+                break;
+
+                case 2:
+                    //remover cliente
+                    break;
+
+                case 3:
+                    //adicionar aresta
+                    break;
+
+                case 4:
+                    //remover aresta
+                    break;
+
+                case 5:
+                    //rodar o djisktra
+                    break;
+
+                case 0:
+                    //encerrrar o sistema
+                    break;
+
+                default:
+                    System.out.println("Digite um Valor válido!!");
+            }
+        }
     }
 }

@@ -20,6 +20,7 @@ public class Grafo {
         if(nome!=null && bairro!=null){
             Cliente cliente = new Cliente(nome, bairro);
             clientes.add(cliente);
+            adjacencias.add(new ArrayList<>());
         }
     }
 
@@ -115,13 +116,13 @@ public class Grafo {
         boolean existe2= false;
         for (i = 0;i< clientes.size() &&!existe; i++) {
             Cliente cliente = clientes.get(i);
-            if (cliente.nome.equals(primeiro)) {
+            if (cliente.bairro.equals(primeiro)|| cliente.nome.equals(ultimo)) {
                 existe=true;
             }
         }
         for (j = 0;j< clientes.size()&&!existe2; j++) {
             Cliente cliente = clientes.get(j);
-            if(cliente.nome.equals(ultimo)){
+            if(cliente.bairro.equals(ultimo)|| cliente.nome.equals(ultimo)){
                 existe2=true;
             }
         }
@@ -159,12 +160,12 @@ public class Grafo {
     // Função para imprimir a rota a partir dos predecessores
     public void imprimirRota(int[] predecessores, int destino) {
         if (predecessores[destino] == -1) {
-            System.out.print(destino);
+            System.out.print(clientes.get(destino));
             return;
         }
 
         imprimirRota(predecessores, predecessores[destino]);
-        System.out.print("->" + destino);
+        System.out.print( "-> " + clientes.get(destino));
     }
 
     public static void main(String[] args) {
@@ -172,14 +173,12 @@ public class Grafo {
         grafo.adicionarCliente("a", "1");
         grafo.adicionarCliente("b", "2");
         grafo.adicionarCliente("c", "3");
-        grafo.adicionarCliente("d", "4");
-        grafo.addArestaNo("a", "b",20);
-        grafo.addArestaNo("a", "c",10);
-        grafo.addArestaNo("b", "d",10);
-        grafo.addArestaNo("c", "d",15);
+        grafo.addArestaNo("a", "b",1);
 //        grafo.adicionarAresta(0,1,1);
-//        grafo.buscarCliente();
-        grafo.dijkstra("a","d");
+        grafo.adicionarAresta(1,2,5);
+        grafo.adicionarAresta(1,0,9);
+        grafo.buscarCliente();
+        grafo.dijkstra("a","b");
         grafo.printAdjacencias();
     }
 }

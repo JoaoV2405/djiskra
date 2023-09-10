@@ -27,17 +27,18 @@ public class SistemaDeRoteamento {
         while (true){
             String o, des;
             int dis;
-            System.out.println(" Digite:\n\n(1) Adcionar 1 Cliente\n(2) Remover 1 Cliente\n(3) Adicionar 1 rua\n(4) Interditar uma Rua\n(5) Calcular Fota\n(0) Encerrar o sistema ");
-                decisao = scanner.nextInt();
+            System.out.println("-------------MENU-------------\n(1) Adcionar 1 Cliente\n(2) Remover 1 Cliente\n(3) Adicionar 1 rua\n(4) Interditar uma Rua\n(5) Calcular Rota\n(6) Ver a rota\n(0) Encerrar o sistema\n Sua escolha: ");
+            decisao = scanner.nextInt();
 
             switch (decisao){
                 case 1:
                     System.out.print("Digite o nome do cliente: ");
+                    scanner.nextLine();
                     String nome = scanner.nextLine();
                     System.out.print("Digite o bairro do cliente: ");
                     String bairro = scanner.nextLine();
                     grafo.adicionarCliente(nome, bairro);
-                break;
+                    break;
 
                 case 2:
                     grafo.removerCliente();
@@ -45,6 +46,7 @@ public class SistemaDeRoteamento {
 
                 case 3:
                     System.out.println("Digite o nome da origem: ");
+                    scanner.nextLine();
                     o = scanner.nextLine();
                     System.out.println("Digite o nome do destino: ");
                     des = scanner.nextLine();
@@ -66,16 +68,20 @@ public class SistemaDeRoteamento {
                 case 5:
                     //rodar o djisktra
                     System.out.println("Digite o ponto de partida: ");
+                    scanner.nextLine();
                     o = scanner.nextLine();
                     System.out.println("Digite o ponto de chegada: ");
                     des = scanner.nextLine();
                     grafo.dijkstra(o, des);
                     break;
 
+                case 6:
+                    grafo.printAdjacencias();
+                    break;
                 case 0:
                     System.out.println("Encerrando o sistema");
                     return;
-                    //encerrrar o sistema
+                //encerrrar o sistema
 
                 default:
                     System.out.println("Digite um Valor válido!!");

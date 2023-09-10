@@ -52,7 +52,7 @@ public class Grafo {
             adjacencias.get(ini).add(new Aresta(fim, peso));
         }else System.out.println("Origem ou destino inválido");
     }
-    void printAdjacencias()
+    public void printAdjacencias()
     {
         for (int i = 0; i < adjacencias.size(); i++) {
             System.out.println("Adjacências do Cliente " + clientes.get(i).nome +" | Bairro: "+clientes.get(i).bairro+" ("+i+")");
@@ -159,12 +159,12 @@ public class Grafo {
     // Função para imprimir a rota a partir dos predecessores
     public void imprimirRota(int[] predecessores, int destino) {
         if (predecessores[destino] == -1) {
-            System.out.print(destino + "->");
+            System.out.print(destino);
             return;
         }
 
         imprimirRota(predecessores, predecessores[destino]);
-        System.out.print(destino + "->");
+        System.out.print("->" + destino);
     }
 
     public static void main(String[] args) {
@@ -172,12 +172,14 @@ public class Grafo {
         grafo.adicionarCliente("a", "1");
         grafo.adicionarCliente("b", "2");
         grafo.adicionarCliente("c", "3");
-        grafo.addArestaNo("a", "b",1);
+        grafo.adicionarCliente("d", "4");
+        grafo.addArestaNo("a", "b",20);
+        grafo.addArestaNo("a", "c",10);
+        grafo.addArestaNo("b", "d",10);
+        grafo.addArestaNo("c", "d",15);
 //        grafo.adicionarAresta(0,1,1);
-        grafo.adicionarAresta(1,2,5);
-        grafo.adicionarAresta(1,0,9);
-        grafo.buscarCliente();
-        grafo.dijkstra("a","b");
+//        grafo.buscarCliente();
+        grafo.dijkstra("a","d");
         grafo.printAdjacencias();
     }
 }

@@ -77,6 +77,22 @@ public class Grafo {
         }
         return existe;
     }
+
+    public void removerCliente(){
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Digite o nome do cliente: ");
+        String nome = scanner.nextLine();
+        System.out.print("Digite o nome do bairro: ");
+        String bairro = scanner.nextLine();
+        for (Cliente cliente: clientes) {
+            if (cliente.bairro.equals(bairro) && cliente.nome.equals(nome)) {
+                clientes.remove(cliente);
+                break;
+            }
+        }
+    }
+
+
     public void removerAresta(int origem, int destino) {
         for (int i = 0; i < adjacencias.get(origem).size(); i++) {
             if (adjacencias.get(origem).get(i).destino == destino) {

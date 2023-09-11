@@ -5,7 +5,7 @@ import java.util.*;
 public class Grafo {
     int V; // Número de vértices (clientes)
     public List<Cliente> clientes; // Lista de clientes
-    List<List<Aresta>> adjacencias; // Lista de adjacências
+    public List<List<Aresta>> adjacencias; // Lista de adjacências
 
     public Grafo(int V) {
         this.V = V;
@@ -20,7 +20,8 @@ public class Grafo {
         if(nome!=null && bairro!=null){
             Cliente cliente = new Cliente(nome, bairro);
             clientes.add(cliente);
-            adjacencias.add(new ArrayList<>());
+            V++;
+            adjacencias.add(new ArrayList<>(V));
         }
     }
 
@@ -55,10 +56,10 @@ public class Grafo {
     }
     public void printAdjacencias()
     {
-        for (int i = 0; i < adjacencias.size(); i++) {
+        for (int i = 0; i < clientes.size(); i++) {
             System.out.println("Adjacências do Cliente " + clientes.get(i).nome +" | Bairro: "+clientes.get(i).bairro+" ("+i+")");
             for (int j = 0; j < adjacencias.get(i).size(); j++) {
-                System.out.print("| Cliente: "+clientes.get(adjacencias.get(i).get(j).destino).nome+", Bairro: "+clientes.get(adjacencias.get(i).get(j).destino).bairro +", Distância: "+adjacencias.get(i).get(j).destino +"km"+" | ");
+                System.out.print(j +"| Cliente: "+clientes.get(adjacencias.get(i).get(j).destino).nome+", Bairro: "+clientes.get(adjacencias.get(i).get(j).destino).bairro +", Distância: "+adjacencias.get(i).get(j).peso +"km"+" | ");
             }
             System.out.println();
         }
@@ -85,23 +86,43 @@ public class Grafo {
         String nome = scanner.nextLine();
         System.out.print("Digite o nome do bairro: ");
         String bairro = scanner.nextLine();
-        for (Cliente cliente: clientes) {
-            if (cliente.bairro.equals(bairro) && cliente.nome.equals(nome)) {
-                clientes.remove(cliente);
+        for (int i = 0; i < clientes.size(); i++){
+            if (clientes.get(i).bairro.equals(bairro) && clientes.get(i).nome.equals(nome)){
+                clientes.remove(clientes.get(i));
+                adjacencias.remove(i);
                 break;
             }
         }
     }
 
 
-    public void removerAresta(int origem, int destino) {
-        for (int i = 0; i < adjacencias.get(origem).size(); i++) {
-            if (adjacencias.get(origem).get(i).destino == destino) {
-                adjacencias.get(origem).remove(i);
-                return;
+    public void removerAresta(String origem, String destino) {
+        int i;
+        int j;
+        boolean existe = false;
+        boolean existe2= false;
+        int ini;
+        for (i = 0;i< clientes.size() &&!existe; i++) {
+            Cliente cliente = clientes.get(i);
+            if (cliente.nome.equals(origem)||cliente.bairro.equals(origem)) {
+                existe=true;
             }
         }
-        System.out.println("Aresta não encontrada. Nenhuma remoção realizada.");
+        for (j = 0;j< clientes.size()&&!existe2; j++) {
+            Cliente cliente = clientes.get(j);
+            if(cliente.nome.equals(destino)||cliente.bairro.equals(destino)){
+                existe2=true;
+            }
+        }
+        if(existe && existe2) {
+            ini = i - 1;
+            for (int k = 0; k < adjacencias.get(ini).size(); k++) {
+                if(clientes.get(adjacencias.get(ini).get(k).destino).nome.equals(destino)){
+                    adjacencias.get(ini).remove(k);
+                    break;
+                }
+            }
+        }else System.out.println("SSSSSSSSSSSSSSSS");
     }
 
     // Função para encontrar a rota mais curta usando o algoritmo de Dijkstra

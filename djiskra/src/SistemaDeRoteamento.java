@@ -1,6 +1,7 @@
 import Classes.Cliente;
 import Classes.Grafo;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class SistemaDeRoteamento {
@@ -38,6 +39,8 @@ public class SistemaDeRoteamento {
                     System.out.print("Digite o bairro do cliente: ");
                     String bairro = scanner.nextLine();
                     grafo.adicionarCliente(nome, bairro);
+                    grafo.adjacencias.add(new ArrayList<>());
+
                     break;
 
                 case 2:
@@ -58,10 +61,11 @@ public class SistemaDeRoteamento {
 
                 case 4:
                     System.out.println("Digite o nome da origem: ");
-                    origem = scanner.nextInt();
+                    scanner.nextLine();
+                    String orige = scanner.nextLine();
                     System.out.println("Digite o nome do destino: ");
-                    destino = scanner.nextInt();
-                    grafo.removerAresta(origem, destino);
+                    String destin = scanner.nextLine();
+                    grafo.removerAresta(orige, destin);
                     //remover aresta
                     break;
 

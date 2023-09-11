@@ -2,27 +2,35 @@ import Classes.Cliente;
 import Classes.Grafo;
 
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class SistemaDeRoteamento {
     public static void main(String[] args) {
         int origem, destino;
+        int V=-1;
+        String nomee;
+        String bairroo;
         Scanner scanner = new Scanner(System.in);
-        System.out.print("Digite o número de clientes (vértices): ");
-        int V = scanner.nextInt();
-        scanner.nextLine(); // Consumir a nova linha
-
+        do {
+            try {
+                System.out.print("Digite o número de clientes (vértices): ");
+                V = scanner.nextInt();
+//                scanner.nextLine(); // Consumir a nova linha
+            } catch (InputMismatchException ime) {
+                System.out.println("Valor inválido");
+            }
+            scanner.nextLine();
+        }while(V==-1);
         Grafo grafo = new Grafo(V);
 
         for (int i = 0; i < V; i++) {
-            System.out.print("Digite o nome do cliente " + (i + 1) + ": ");
-            String nome = scanner.nextLine();
-            System.out.print("Digite o bairro do cliente " + (i + 1) + ": ");
-            String bairro = scanner.nextLine();
-            grafo.clientes.add(new Cliente(nome, bairro));
-        }
-
-
+                System.out.print("Digite o nome do cliente " + (i + 1) + ": ");
+                nomee = scanner.nextLine();
+                System.out.print("Digite o bairro do cliente " + (i + 1) + ": ");
+                bairroo = scanner.nextLine();
+                grafo.adicionarCliente(nomee, bairroo);
+            }
 
         int decisao = 10;
         while (true){
@@ -40,7 +48,6 @@ public class SistemaDeRoteamento {
                     String bairro = scanner.nextLine();
                     grafo.adicionarCliente(nome, bairro);
                     grafo.adjacencias.add(new ArrayList<>());
-
                     break;
 
                 case 2:

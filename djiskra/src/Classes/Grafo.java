@@ -17,11 +17,22 @@ public class Grafo {
         }
     }
     public void adicionarCliente(String nome, String bairro){
+        boolean clienteIgual=false;
         if(nome!=null && bairro!=null){
-            Cliente cliente = new Cliente(nome, bairro);
-            clientes.add(cliente);
-            V++;
-            adjacencias.add(new ArrayList<>(V));
+                for (Cliente cliente1 : clientes) {
+                    if (cliente1.nome.equals(nome)||cliente1.bairro.equals(bairro)) {
+                        clienteIgual = true;
+                        break;
+                    }
+                }
+                if (!clienteIgual) {
+                    Cliente cliente = new Cliente(nome, bairro);
+                    clientes.add(cliente);
+                    V++;
+                    adjacencias.add(new ArrayList<>(V));
+                }else{
+                    System.out.println("Não pode haver cliente ou bairro com o mesmo nome");
+                }
         }
     }
 
@@ -51,7 +62,19 @@ public class Grafo {
         if(existe && existe2){
             ini = i-1;
             fim = j-1;
-            adjacencias.get(ini).add(new Aresta(fim, peso));
+            boolean existe3=true;
+            if(adjacencias.get(ini).size()>0) {
+                for (int k = 0; k < adjacencias.get(ini).size() && existe3; k++) {
+                    if (adjacencias.get(ini).get(k).destino == fim) {
+                        System.out.println("Rota já existente!");
+                        break;
+                    } else existe3 = false;
+                }
+            }else existe3 = false;
+            if(!existe3){
+                    System.out.println("Adição concluída!");
+                adjacencias.get(ini).add(new Aresta(fim, peso));
+            }
         }else System.out.println("Origem ou destino inválido");
     }
     public void printAdjacencias()
@@ -81,20 +104,31 @@ public class Grafo {
     }
 
     public void removerCliente(){
+        int i;
         Scanner scanner = new Scanner(System.in);
         System.out.print("Digite o nome do cliente: ");
         String nome = scanner.nextLine();
         System.out.print("Digite o nome do bairro: ");
         String bairro = scanner.nextLine();
-        for (int i = 0; i < clientes.size(); i++){
-            if (clientes.get(i).bairro.equals(bairro) && clientes.get(i).nome.equals(nome)){
+        for (Cliente cliente : clientes) {
+            removerAresta(cliente.bairro, bairro);
+        }
+        for ( i = 0; i < clientes.size(); i++){
+            if (clientes.get(i).bairro.equals(bairro)) {
                 clientes.remove(clientes.get(i));
                 adjacencias.remove(i);
+                System.out.println(clientes.size());
                 break;
             }
         }
+        for (int k = 0; k < clientes.size(); k ++){
+            for (int j = 0; j <adjacencias.get(k).size(); j++){
+                if(adjacencias.get(k).get(j).destino>i){
+                    adjacencias.get(k).get(j).destino-=1;
+                }
+            }
+        }
     }
-
 
     public void removerAresta(String origem, String destino) {
         int i;
@@ -119,10 +153,11 @@ public class Grafo {
             for (int k = 0; k < adjacencias.get(ini).size(); k++) {
                 if(clientes.get(adjacencias.get(ini).get(k).destino).nome.equals(destino)){
                     adjacencias.get(ini).remove(k);
+                    System.out.println("Remoção concluída!");
                     break;
                 }
             }
-        }else System.out.println("SSSSSSSSSSSSSSSS");
+        }else System.out.println("Não existe aresta!");
     }
 
     // Função para encontrar a rota mais curta usando o algoritmo de Dijkstra
@@ -135,7 +170,7 @@ public class Grafo {
         int j;
         boolean existe = false;
         boolean existe2= false;
-        for (i = 0;i< clientes.size() &&!existe; i++) {
+        for (i = 0;i< clientes.size() &&!existe; i++){
             Cliente cliente = clientes.get(i);
             if (cliente.bairro.equals(primeiro)|| cliente.nome.equals(ultimo)) {
                 existe=true;
@@ -172,9 +207,11 @@ public class Grafo {
                     }
                 }
             }
-
+            if(distancias[destino]!=2147483647) {
             imprimirRota(predecessores, destino);
-            System.out.println("\nA distância total é: " + distancias[destino]+"km");
+
+                System.out.println("\nA distância total é: " + distancias[destino] + "km");
+            }else System.out.println("Não há rota disponível");
         }else System.out.println("Não há origem ou destino com esse nome");
     }
 
